@@ -15,12 +15,17 @@ class BackendAPIError(Exception):
     """백엔드 연결 또는 API 응답 처리 중 발생한 오류입니다."""
 
 
-def request(method: str, path: str, json: dict[str, Any] | None = None):
+def request(method: str, 
+            path: str, 
+            json: dict[str, Any] | None = None,
+            files: dict[str, Any] | None = None, 
+            ):
     try:
         response = httpx.request(
             method,
             f"{BACKEND_URL}{path}",
             json=json,
+            files=files,
             timeout=REQUEST_TIMEOUT,
         )
     except httpx.TimeoutException as error:
