@@ -10,10 +10,9 @@ def product_create(product: ProductCreate) -> ProductPublic | None:
     now = datetime.now(ZoneInfo("Asia/Seoul"))
 
     result = (
-        supabase.table("products")
+        supabase.table("items")
          .insert(
             {
-                "id": now.strftime("%Y%m%d%H%M%S%f"),
                 "name": product.name,
                 "price": product.price,
                 "created_at": now.isoformat(),   # timestamptz
@@ -29,7 +28,7 @@ def product_create(product: ProductCreate) -> ProductPublic | None:
 def product_get_all() -> list[ProductPublic]:
     supabase = get_supabase()
     result = (
-        supabase.table("products")
+        supabase.table("items")
         .select("*")
         .execute()
     )
@@ -40,7 +39,7 @@ def product_get(product_id: str) -> ProductPublic | None:
     supabase = get_supabase()
 
     result = (
-        supabase.table("products")
+        supabase.table("items")
         .select("*")
         .eq("id", product_id)
         .execute()
@@ -54,7 +53,7 @@ def product_get(product_id: str) -> ProductPublic | None:
 def product_delete(product_id: str) -> ProductPublic | None:
     supabase = get_supabase()
     result = (
-        supabase.table("products")
+        supabase.table("items")
         .delete()
         .eq("id", product_id)
         .execute()
@@ -72,7 +71,7 @@ def product_update(
     supabase = get_supabase()
 
     result = (
-        supabase.table("products")
+        supabase.table("items")
         .update(
                 {
                     "name": product.name,

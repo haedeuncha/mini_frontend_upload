@@ -14,7 +14,7 @@ class ProductUpdate(BaseModel):
 
 
 class ProductPublic(BaseModel):
-    id: str = Field(examples=["20260721170435315246"])
+    id: int = Field(examples=[1])
     name: str
     price: int
     created_at: datetime

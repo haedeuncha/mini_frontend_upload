@@ -47,7 +47,14 @@ def get_supabase() -> Client:
 
     load_dotenv(ENV_PATH)
 
-    url = get_required_env("SUPABASE_URL")
+    # 이전 실습 파일에서 SUPABASE_UR(끝의 L 누락)로 저장한 경우도
+    # 실행 중인 프로젝트가 즉시 연결될 수 있도록 한 번만 호환합니다.
+    # 새 .env 파일에는 반드시 SUPABASE_URL 이름을 사용하세요.
+    url = os.getenv("SUPABASE_URL", "").strip() or os.getenv("SUPABASE_UR", "").strip()
+    if not url:
+        raise RuntimeError("SUPABASE_URL 값이 없습니다. backend/.env 파일을 확인하세요.")
+    if url.startswith(("your-", "https://your-")):
+        raise RuntimeError("SUPABASE_URL에 실제 Supabase Project URL을 입력하세요.")
     service_role_key = get_required_env("SUPABASE_SERVICE_ROLE_KEY")
 
     return create_client(url, service_role_key)
